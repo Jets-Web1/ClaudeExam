@@ -18,10 +18,10 @@
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.practicefieldnotes.architect"
+      "bundleIdentifier": "com.sweb.foundationspractice"
     },
     "android": {
-      "package": "com.practicefieldnotes.architect",
+      "package": "com.sweb.foundationspractice",
       "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#183B2E",

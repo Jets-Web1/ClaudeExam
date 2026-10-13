@@ -1,5 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import mobileAds, { AdEventType, InterstitialAd, TestIds } from 'react-native-google-mobile-ads';
+import mobileAds, {
+  AdEventType,
+  AdsConsent,
+  AdsConsentPrivacyOptionsRequirementStatus,
+  InterstitialAd,
+  TestIds,
+} from 'react-native-google-mobile-ads';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useEffect, useRef, useState } from 'react';
@@ -1249,6 +1255,7 @@ export default function App() {
   const adTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const adsInitializedRef = useRef(false);
   const adsInitializationFailedRef = useRef(false);
+  const [privacyOptionsRequired, setPrivacyOptionsRequired] = useState(false);
   const pendingAdActionRef = useRef<(() => void) | null>(null);
 
   const timedLength = fullExam ? QUESTIONS.length : EXAM_LENGTH;
@@ -1351,8 +1358,18 @@ export default function App() {
       completeAdBreak();
     });
 
-    mobileAds()
-      .initialize()
+    // Ask for consent where required (EEA, UK, Switzerland) before requesting ads.
+    // If the update fails, fall back to the consent stored from an earlier session.
+    AdsConsent.gatherConsent()
+      .catch((error: unknown) => logAd('consent update failed', error))
+      .then(() => AdsConsent.getConsentInfo())
+      .then((consent) => {
+        setPrivacyOptionsRequired(
+          consent.privacyOptionsRequirementStatus === AdsConsentPrivacyOptionsRequirementStatus.REQUIRED,
+        );
+        if (!consent.canRequestAds) throw new Error('consent does not allow ad requests');
+        return mobileAds().initialize();
+      })
       .then(() => {
         logAd('initialized');
         adsInitializedRef.current = true;
@@ -1491,7 +1508,7 @@ export default function App() {
           </View>
 
           <View style={styles.intro}>
-            <Text style={styles.eyebrow}>CLAUDE SOLUTION ARCHITECT FOUNDATIONS</Text>
+            <Text style={styles.eyebrow}>PRACTICE FOR THE CLAUDE ARCHITECT FOUNDATIONS EXAM</Text>
             <Text style={styles.headline}>Make good{ '\n'}systems choices.</Text>
             <Text style={styles.introText}>A focused practice desk for designing useful, reliable AI solutions.</Text>
           </View>
@@ -1595,6 +1612,15 @@ export default function App() {
           <View style={styles.footerNote}>
             <Text style={styles.footerRule} />
             <Text style={styles.footerText}>Independent study tool. Not affiliated with Anthropic. Questions are original practice material, not official exam content.</Text>
+            {privacyOptionsRequired && (
+              <Pressable
+                accessibilityRole="button"
+                onPress={() => AdsConsent.showPrivacyOptionsForm().catch((error: unknown) => logAd('privacy options failed', error))}
+                style={styles.privacyButton}
+              >
+                <Text style={styles.privacyButtonText}>Privacy choices</Text>
+              </Pressable>
+            )}
           </View>
         </ScrollView>
       )}
@@ -1854,6 +1880,8 @@ const styles = StyleSheet.create({
   footerNote: { marginTop: 21 },
   footerRule: { width: 27, height: 3, backgroundColor: COLORS.orange, marginBottom: 10 },
   footerText: { color: COLORS.muted, fontSize: 10, lineHeight: 15 },
+  privacyButton: { alignSelf: 'flex-start', marginTop: 10, paddingVertical: 6 },
+  privacyButtonText: { color: COLORS.green, fontSize: 11, fontWeight: '700', textDecorationLine: 'underline' },
   examContent: { paddingHorizontal: 22, paddingTop: 10, paddingBottom: 32 },
   examHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 23 },
   closeButton: { width: 38, height: 38, borderRadius: 12, backgroundColor: COLORS.paper, borderWidth: 1, borderColor: COLORS.line, alignItems: 'center', justifyContent: 'center' },

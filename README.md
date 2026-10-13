@@ -46,22 +46,22 @@ Each session shuffles the question order and the option order, so where the corr
 
 ## Ads
 
-Development builds use Google's sample AdMob app IDs from `app.json` and Google's test interstitial unit ID. Interstitials are requested after every 10 distinct answers; the timed exam pauses while an ad loads or displays, then resumes after it closes. If an ad fails to load, the session continues without blocking.
+Development builds use Google's sample AdMob app IDs and Google's test interstitial unit ID. Interstitials are requested after every 10 distinct answers; the timed exam pauses while an ad loads or displays, then resumes after it closes. If an ad fails to load within 8 seconds, the session continues without it. In development builds, every ad step is logged to the Metro terminal as `[ads] …`.
 
-Before a production build, replace the sample Android and iOS App IDs in `app.json` with your AdMob App IDs and set `EXPO_PUBLIC_ADMOB_INTERSTITIAL_ID` to your production interstitial unit ID. If that variable is missing, production builds skip interstitial requests. This includes the `preview` profile, because it is a release build and does not use the test ID.
+[app.config.js](app.config.js) reads the AdMob App IDs from `ADMOB_ANDROID_APP_ID` and `ADMOB_IOS_APP_ID`, and falls back to Google's sample IDs when they are unset. The interstitial unit ID comes from `EXPO_PUBLIC_ADMOB_INTERSTITIAL_ID`. EAS **production** builds fail if the App ID for the target platform or the interstitial ID is missing, so test IDs can't reach the Play Store. The `preview` profile is also a release build, but it doesn't use the test interstitial ID, so it shows no ads unless you set `EXPO_PUBLIC_ADMOB_INTERSTITIAL_ID` for it.
 
-`EXPO_PUBLIC_*` values are inlined into the JavaScript bundle at build time. A local `.env` file is not uploaded to EAS cloud builds, so set the variable in EAS instead:
+Set the values in the EAS `production` environment. A local `.env` file is not uploaded to EAS cloud builds, and `EXPO_PUBLIC_*` values are inlined into the JavaScript bundle at build time. Ad IDs are not secret.
 
 ```sh
-eas env:create --name EXPO_PUBLIC_ADMOB_INTERSTITIAL_ID --value ca-app-pub-xxx/yyy --environment production --visibility plaintext
+eas env:create --name ADMOB_ANDROID_APP_ID --value ca-app-pub-xxx~yyy --environment production --visibility plaintext
+eas env:create --name EXPO_PUBLIC_ADMOB_INTERSTITIAL_ID --value ca-app-pub-xxx/zzz --environment production --visibility plaintext
 ```
 
-You can also add it under `build.production.env` in `eas.json`. Ad unit IDs are not secret.
+### Consent
+
+Before initializing ads, the app runs Google's User Messaging Platform consent flow (`AdsConsent.gatherConsent()`). Users in regions that require consent, such as the EEA, the UK and Switzerland, see Google's consent form. Ads are requested only when the result allows it. When consent applies to the user, a **Privacy choices** button on the home screen reopens the form. Before going live, create and publish a GDPR consent message for the app under **Privacy & messaging** in AdMob; without one, users in those regions get no consent form and no ads.
 
 `npx expo install --check` prints a warning that the root-level `"react-native-google-mobile-ads"` key in `app.json` is ignored by the Expo config. That is expected. The library's native build reads the key directly, while Expo reads only the plugin entry.
-
-Configure the required consent/privacy flow for your audience and target regions before serving live ads.
-
 ## Test
 
 Run the available static checks:
@@ -83,7 +83,7 @@ There is no automated UI test suite configured yet; the flows above are manual e
 
 ## Build for Google Play
 
-1. Choose a unique Android application ID you control and update `android.package` in `app.json` before the first store upload. The current ID is a starter value.
+1. The Android application ID is `com.sweb.foundationspractice`. It becomes permanent with the first store upload. After changing it, run `npx expo prebuild --clean --platform android` before the next local build.
 2. Install the EAS CLI (`npm install -g eas-cli`), then sign in to an Expo account with `eas login` and link this project with `eas build:configure`. and link this project with `eas build:configure`.
 3. Build an installable preview with `eas build --platform android --profile preview`.
 4. Build the Play Store Android App Bundle with `eas build --platform android --profile production`.
