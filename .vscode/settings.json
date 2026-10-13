@@ -1,0 +1,9 @@
+{
+  "terminal.integrated.defaultProfile.windows": "Command Prompt",
+  "terminal.integrated.env.windows": {
+    "JAVA_HOME": "${env:LOCALAPPDATA}\\Programs\\Temurin-21\\jdk-21.0.12.1+1",
+    "ANDROID_HOME": "${env:LOCALAPPDATA}\\Android\\Sdk",
+    "ANDROID_SDK_ROOT": "${env:LOCALAPPDATA}\\Android\\Sdk",
+    "PATH": "${env:LOCALAPPDATA}\\Programs\\Temurin-21\\jdk-21.0.12.1+1\\bin;${env:LOCALAPPDATA}\\Android\\Sdk\\platform-tools;${env:LOCALAPPDATA}\\Android\\Sdk\\emulator;${env:LOCALAPPDATA}\\Android\\Sdk\\cmdline-tools\\latest\\bin;${env:NODE_HOME};${env:PATH}"
+  }
+}
