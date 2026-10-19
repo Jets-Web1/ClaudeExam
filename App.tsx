@@ -51,9 +51,14 @@ type AttemptResult = {
 const RESULT_STORAGE_KEY = 'fieldnotes.latestAttempt';
 const QUESTIONS_PER_AD = 10;
 const AD_LOAD_TIMEOUT_MS = 8000;
-const INTERSTITIAL_AD_UNIT_ID = __DEV__
-  ? TestIds.INTERSTITIAL
-  : process.env.EXPO_PUBLIC_ADMOB_INTERSTITIAL_ID;
+// With EXPO_PUBLIC_DISABLE_ADS=true there is no ad unit, so the app never asks
+// for consent, initializes the ads SDK, or pauses for an ad break.
+const ADS_DISABLED = process.env.EXPO_PUBLIC_DISABLE_ADS === 'true';
+const INTERSTITIAL_AD_UNIT_ID = ADS_DISABLED
+  ? undefined
+  : __DEV__
+    ? TestIds.INTERSTITIAL
+    : process.env.EXPO_PUBLIC_ADMOB_INTERSTITIAL_ID;
 
 const QUESTIONS: Question[] = [
   {

@@ -32,6 +32,26 @@ This app uses a native AdMob module and cannot run in Expo Go. `npx expo run:and
 
 `npm run ios` needs macOS with Xcode. Only the Android flow is set up on this machine.
 
+### Run without ads
+
+```sh
+set EXPO_PUBLIC_DISABLE_ADS=true
+npx expo prebuild --clean --platform android
+npx expo run:android
+```
+
+The `set` command applies only to the current Command Prompt window, so run the build in that same window. The JavaScript side of the flag is read when Metro bundles, so restart Metro with `npx expo start --clear` after changing it. The native side, which removes the advertising ID permission, only changes after `npx expo prebuild --clean`. To go back to ads, close the window (or run `set EXPO_PUBLIC_DISABLE_ADS=`) and repeat the prebuild and run steps. See [Disabling ads](#disabling-ads) for what the flag changes.
+
+### Test a release build locally
+
+Before publishing, run a release build on the emulator. It bundles the JavaScript into the app, needs no Metro server, and behaves like the store build:
+
+```sh
+npx expo run:android --variant release
+```
+
+Local release builds are signed with the debug key, so they can't be uploaded to Play Console; use EAS for the store bundle (see [Build for Google Play](#build-for-google-play)). Release builds don't use Google's test ad unit. Without `EXPO_PUBLIC_ADMOB_INTERSTITIAL_ID` they show no ads. If you set a real interstitial ID, don't tap the ads, because clicking your own live ads can get your AdMob account suspended. To check the ad-free version, set `EXPO_PUBLIC_DISABLE_ADS=true` and run the prebuild step from [Run without ads](#run-without-ads) first.
+
 ## Project layout
 
 - [App.tsx](App.tsx): the whole app, including the question bank (`QUESTIONS`), session logic, ad handling, and styles.
@@ -56,6 +76,12 @@ Set the values in the EAS `production` environment. A local `.env` file is not u
 eas env:create --name ADMOB_ANDROID_APP_ID --value ca-app-pub-xxx~yyy --environment production --visibility plaintext
 eas env:create --name EXPO_PUBLIC_ADMOB_INTERSTITIAL_ID --value ca-app-pub-xxx/zzz --environment production --visibility plaintext
 ```
+
+### Disabling ads
+
+Set `EXPO_PUBLIC_DISABLE_ADS=true` to build the app without ads. The app then never runs the consent flow, never initializes the ads SDK, and never pauses for an ad break, and the Privacy choices button doesn't appear. [app.config.js](app.config.js) skips the AdMob ID checks and removes the `com.google.android.gms.permission.AD_ID` permission from the manifest. The ads SDK is still linked into the binary because `App.tsx` imports it, but it makes no ad requests.
+
+The `preview-noads` and `production-noads` EAS profiles set the flag for you (`npm run build:android:noads` builds the store bundle). To run without ads locally, see [Run without ads](#run-without-ads).
 
 ### Consent
 
@@ -84,9 +110,11 @@ There is no automated UI test suite configured yet; the flows above are manual e
 ## Build for Google Play
 
 1. The Android application ID is `com.sweb.foundationspractice`. It becomes permanent with the first store upload. After changing it, run `npx expo prebuild --clean --platform android` before the next local build.
-2. Install the EAS CLI (`npm install -g eas-cli`), then sign in to an Expo account with `eas login` and link this project with `eas build:configure`. and link this project with `eas build:configure`.
-3. Build an installable preview with `eas build --platform android --profile preview`.
-4. Build the Play Store Android App Bundle with `eas build --platform android --profile production`.
-5. Complete the Play Console listing, content rating, privacy policy, and Data safety declaration before submission. The app keeps only the latest practice result on-device and has no account or app backend. The Google Mobile Ads SDK does collect data, including the advertising ID, device information, and diagnostics. Declare that in Data safety, and declare that the app contains ads.
+2. Install the EAS CLI (`npm install -g eas-cli`), then sign in to an Expo account with `eas login` and link this project with `eas build:configure`.
+3. Build an installable preview APK with `eas build --platform android --profile preview`, or `--profile preview-noads` for the ad-free version. Install it on a phone from the link EAS prints, and test it there before building for the store.
+4. Build the Play Store Android App Bundle with `npm run build:android` (the `production` profile, with ads), or `npm run build:android:noads` (the `production-noads` profile, without ads). Download the `.aab` from the link EAS prints and upload it under a release in Play Console, or submit it with `eas submit --platform android`.
+5. Complete the Play Console listing, content rating, privacy policy, and Data safety declaration before submission. The app keeps only the latest practice result on-device and has no account or app backend.
+   - With ads: the Google Mobile Ads SDK collects data, including the advertising ID, device information, and diagnostics. Declare that in Data safety, answer **Yes** to "Does your app use advertising ID?", and declare that the app contains ads.
+   - Without ads: declare that the app does not contain ads, and answer **No** to the advertising ID question; the `AD_ID` permission is removed from the manifest.
 
 The `production` EAS profile increments Android version codes. A Play Console developer account and signing/build credentials are required to publish; they are not included in this repository.

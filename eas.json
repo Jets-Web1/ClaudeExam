@@ -17,11 +17,23 @@
         "buildType": "apk"
       }
     },
+    "preview-noads": {
+      "extends": "preview",
+      "env": {
+        "EXPO_PUBLIC_DISABLE_ADS": "true"
+      }
+    },
     "production": {
       "environment": "production",
       "autoIncrement": true,
       "android": {
         "buildType": "app-bundle"
+      }
+    },
+    "production-noads": {
+      "extends": "production",
+      "env": {
+        "EXPO_PUBLIC_DISABLE_ADS": "true"
       }
     }
   },
