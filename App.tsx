@@ -18,7 +18,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import { QUESTIONS, TOPICS, type Source, type Topic } from './questions';
+import { FULL_EXAM_SHARE, QUESTIONS, TOPICS, type Source, type Topic } from './questions';
 
 type Mode = 'timed' | 'study';
 type Screen = 'home' | 'exam' | 'results';
@@ -258,10 +258,10 @@ export default function App() {
   }, [screen, mode, adStatus, secondsLeft]);
 
   function startSession(nextMode: Mode, topic: Topic | null = null, quick = false) {
-    // The full exam draws an equal share from every topic; other sessions draw at random.
+    // The full exam draws from every domain by its exam weight; other sessions draw at random.
     const drawn = nextMode === 'timed' && !topic && !quick && fullExam
       ? shuffle(TOPICS.flatMap((examTopic) =>
-          shuffle(QUESTIONS.filter((question) => question.topic === examTopic)).slice(0, FULL_EXAM_LENGTH / TOPICS.length),
+          shuffle(QUESTIONS.filter((question) => question.topic === examTopic)).slice(0, FULL_EXAM_SHARE[examTopic]),
         ))
       : shuffle(topic ? QUESTIONS.filter((question) => question.topic === topic) : QUESTIONS)
           .slice(0, quick ? 5 : nextMode === 'timed' && !topic ? EXAM_LENGTH : SESSION_LENGTH);
@@ -392,7 +392,7 @@ export default function App() {
             </View>
             <Text style={styles.examCardBody}>
               {mode === 'timed'
-                ? `${timedLength} original questions across architecture, context, tools, and operations.`
+                ? `${timedLength} original questions across the five exam domains.`
                 : 'Answer at your own pace. Check each response to see the reasoning.'}
             </Text>
             {mode === 'timed' && (

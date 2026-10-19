@@ -1,6 +1,11 @@
 // The question bank. Each source quote must appear word for word on the linked page.
 
-export type Topic = 'Architecture' | 'Prompting & context' | 'Tools & agents' | 'Safety & operations';
+export type Topic =
+  | 'Architecture & orchestration'
+  | 'Claude Code'
+  | 'Prompts & structured output'
+  | 'Tools & MCP'
+  | 'Context & reliability';
 
 export type Source = {
   title: string;
@@ -19,17 +24,29 @@ export type Question = {
   source: Source;
 };
 
+// The five domains of the Claude Certified Architect, Foundations exam, in order of weight.
 export const TOPICS: Topic[] = [
-  'Architecture',
-  'Prompting & context',
-  'Tools & agents',
-  'Safety & operations',
+  'Architecture & orchestration',
+  'Claude Code',
+  'Prompts & structured output',
+  'Tools & MCP',
+  'Context & reliability',
 ];
+
+// How many questions the 60-question full exam draws from each domain, following the
+// reported exam weights (27%, 20%, 20%, 18%, 15%).
+export const FULL_EXAM_SHARE: Record<Topic, number> = {
+  'Architecture & orchestration': 16,
+  'Claude Code': 12,
+  'Prompts & structured output': 12,
+  'Tools & MCP': 11,
+  'Context & reliability': 9,
+};
 
 export const QUESTIONS: Question[] = [
   {
     id: 1,
-    topic: 'Architecture',
+    topic: 'Architecture & orchestration',
     prompt: 'A support assistant must answer questions using a large, frequently updated knowledge base. What is the strongest starting architecture?',
     options: [
       'Load the full knowledge base into a cached system prompt so every answer can draw on all of it',
@@ -47,7 +64,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 2,
-    topic: 'Prompting & context',
+    topic: 'Prompts & structured output',
     prompt: 'An application prompt includes retrieved documents that may contain instructions. How should those documents be treated?',
     options: [
       'As trusted context, since the documents come from company-controlled storage',
@@ -66,7 +83,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 3,
-    topic: 'Tools & agents',
+    topic: 'Tools & MCP',
     prompt: 'A model proposes issuing a refund through a write-enabled tool. What should the application do before executing it?',
     options: [
       'Execute it if the arguments pass JSON schema validation',
@@ -85,7 +102,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 4,
-    topic: 'Safety & operations',
+    topic: 'Context & reliability',
     prompt: 'A prompt change improves a few hand-picked examples but may affect other workflows. What is the best release check?',
     options: [
       'Ship it, since the hand-picked examples cover the most common requests',
@@ -104,7 +121,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 5,
-    topic: 'Architecture',
+    topic: 'Architecture & orchestration',
     prompt: 'A workflow has a straightforward classification step with strict latency and cost limits. Which approach should you evaluate first?',
     options: [
       'The most capable model, so quality is never the limiting factor',
@@ -123,7 +140,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 6,
-    topic: 'Prompting & context',
+    topic: 'Context & reliability',
     prompt: 'A long-running conversation is nearing the model context limit. Which response best preserves continuity?',
     options: [
       'Drop the oldest messages automatically, keeping only the most recent turns',
@@ -141,7 +158,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 7,
-    topic: 'Tools & agents',
+    topic: 'Prompts & structured output',
     prompt: 'The application needs machine-readable model output that conforms to a known shape. What is the most reliable design?',
     options: [
       'Ask for JSON in the prompt and include an example of the expected format',
@@ -159,7 +176,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 8,
-    topic: 'Safety & operations',
+    topic: 'Context & reliability',
     prompt: 'A client retries a request after a network timeout, but the first attempt may already have created a support ticket. What reduces duplicate side effects?',
     options: [
       'Retry immediately with the same payload, since a timeout usually means the request failed',
@@ -177,7 +194,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 9,
-    topic: 'Safety & operations',
+    topic: 'Tools & MCP',
     prompt: "A document retrieved for a user contains text attempting to override the assistant's instructions. What is the primary control?",
     options: [
       'A system prompt line telling the model to ignore instructions inside documents',
@@ -196,7 +213,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 10,
-    topic: 'Architecture',
+    topic: 'Context & reliability',
     prompt: 'A production assistant becomes slower and more expensive after launch. Which telemetry best helps locate the cause?',
     options: [
       'Total request count and average end-to-end latency per day',
@@ -215,7 +232,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 11,
-    topic: 'Tools & agents',
+    topic: 'Architecture & orchestration',
     prompt: 'When is an agentic loop with tool use most justified?',
     options: [
       'Whenever the task can be described in a single prompt',
@@ -234,7 +251,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 12,
-    topic: 'Prompting & context',
+    topic: 'Prompts & structured output',
     prompt: 'A prompt must consistently return a concise support response with required fields. What is the best first refinement?',
     options: [
       'Add many examples of good responses, covering every type of request',
@@ -253,7 +270,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 13,
-    topic: 'Architecture',
+    topic: 'Architecture & orchestration',
     prompt: 'A mobile app calls a model provider directly and needs an API credential. Where should that credential live?',
     options: [
       'In the app bundle, obfuscated at build time and rotated with every release',
@@ -272,7 +289,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 14,
-    topic: 'Prompting & context',
+    topic: 'Context & reliability',
     prompt: 'Two retrieved policy passages disagree. Each includes an owner and an effective date. How should the assistant handle the conflict?',
     options: [
       'Prefer the newer passage from the authoritative owner, and flag any remaining doubt',
@@ -291,7 +308,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 15,
-    topic: 'Tools & agents',
+    topic: 'Tools & MCP',
     prompt: 'A tool call includes a tenant ID selected by the model. What must happen before the tool reads tenant data?',
     options: [
       "Nothing extra, because the model took the ID from the user's own message",
@@ -310,7 +327,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 16,
-    topic: 'Safety & operations',
+    topic: 'Context & reliability',
     prompt: 'A team needs request traces to debug answer quality, but prompts may contain personal data. What is the best logging approach?',
     options: [
       'Log full prompts, but restrict the trace dashboard to the engineering team',
@@ -329,7 +346,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 17,
-    topic: 'Architecture',
+    topic: 'Context & reliability',
     prompt: 'A retrieval index can lag behind updates to the source policy. Which design best handles freshness?',
     options: [
       'Rebuild the whole index every night and assume it is current during the day',
@@ -347,7 +364,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 18,
-    topic: 'Prompting & context',
+    topic: 'Context & reliability',
     prompt: 'Many requests share the same long system instructions, followed by user-specific data. How can the application reduce repeated input cost when supported?',
     options: [
       'Keep the shared instructions as an unchanged prefix and put user data after them',
@@ -366,7 +383,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 19,
-    topic: 'Tools & agents',
+    topic: 'Architecture & orchestration',
     prompt: 'A workflow always follows the same sequence: validate a request, look up an account, request approval, then save an update. Which orchestration is the best starting point?',
     options: [
       'An agent with access to all four tools that decides the order itself',
@@ -385,7 +402,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 20,
-    topic: 'Safety & operations',
+    topic: 'Architecture & orchestration',
     prompt: 'An assistant drafts a recommendation that could trigger a consequential account change. What is the safer initial release design?',
     options: [
       "Apply the change automatically when the model's stated confidence is high",
@@ -404,7 +421,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 21,
-    topic: 'Architecture',
+    topic: 'Architecture & orchestration',
     prompt: 'A support flow must verify that an order ID matches the signed-in customer before showing order details. Where should that check happen?',
     options: [
       'In server-side authorization code, before any order data is returned',
@@ -423,7 +440,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 22,
-    topic: 'Prompting & context',
+    topic: 'Context & reliability',
     prompt: 'A long conversation must be summarized before a new model call. Which information should the summary preserve?',
     options: [
       'Every message verbatim, with only greetings and filler removed',
@@ -442,7 +459,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 23,
-    topic: 'Tools & agents',
+    topic: 'Tools & MCP',
     prompt: 'A model-generated tool call needs to search order records in SQL. Which implementation best limits injection risk?',
     options: [
       'Let the model write the SQL, and run it only if it starts with SELECT',
@@ -461,7 +478,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 24,
-    topic: 'Safety & operations',
+    topic: 'Context & reliability',
     prompt: 'A new model version appears better on an internal demo. What is the strongest way to decide whether to release it?',
     options: [
       'Switch everyone over, since newer models are generally better at every task',
@@ -480,7 +497,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 25,
-    topic: 'Architecture',
+    topic: 'Context & reliability',
     prompt: 'A user asks an assistant to check payment status. The payment system is temporarily unavailable. What should the assistant do?',
     options: [
       'Show the last known status from earlier in the conversation as current',
@@ -499,7 +516,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 26,
-    topic: 'Prompting & context',
+    topic: 'Prompts & structured output',
     prompt: 'An answer must cite the exact document and page that support it. How should citations be produced?',
     options: [
       'Ask the model to include document titles and page numbers in its answer',
@@ -517,7 +534,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 27,
-    topic: 'Tools & agents',
+    topic: 'Tools & MCP',
     prompt: 'A tool returns text from an external web page, and the model will pass it to another tool. How should the returned text be handled?',
     options: [
       'Treat it as untrusted data and validate anything derived from it',
@@ -536,7 +553,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 28,
-    topic: 'Safety & operations',
+    topic: 'Context & reliability',
     prompt: 'A thumbs-up rate is high, but users report occasional unsafe answers. What is the best next evaluation step?',
     options: [
       'Accept the reports as rare edge cases, since the overall rating is high',
@@ -555,7 +572,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 29,
-    topic: 'Architecture',
+    topic: 'Architecture & orchestration',
     prompt: 'An assistant helps users review and submit purchase orders. Which system should remain the source of truth for approval and order status?',
     options: [
       'The conversation transcript, since it records every decision the user made',
@@ -574,7 +591,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 30,
-    topic: 'Prompting & context',
+    topic: 'Prompts & structured output',
     prompt: "A prompt change needs to be compared with last month's production behavior. What makes the comparison reproducible?",
     options: [
       "Save last month's production answers and compare the new ones by reading them",
@@ -593,7 +610,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 31,
-    topic: 'Tools & agents',
+    topic: 'Architecture & orchestration',
     prompt: 'An agent is asked to complete a research task that may require several tool calls. Which guardrail helps prevent runaway execution?',
     options: [
       'Tell the model in the prompt to be efficient and avoid unnecessary steps',
@@ -612,7 +629,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 32,
-    topic: 'Safety & operations',
+    topic: 'Context & reliability',
     prompt: "The assistant lacks enough information to answer a user's question reliably. What behavior is safest?",
     options: [
       'State the uncertainty, ask a focused follow-up, or route the case for review',
@@ -631,7 +648,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 33,
-    topic: 'Architecture',
+    topic: 'Architecture & orchestration',
     prompt: 'A team must classify 50,000 archived support tickets with Claude by tomorrow. No user is waiting on any single result. Which approach fits best?',
     options: [
       'Send concurrent Messages API requests as fast as rate limits allow',
@@ -650,7 +667,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 34,
-    topic: 'Architecture',
+    topic: 'Architecture & orchestration',
     prompt: "A team wants a Claude agent that runs bash and edits files in a workspace, but they don't want to host the agent loop or the sandbox. Which option fits?",
     options: [
       'The SDK tool runner, with bash and file tools they implement and host',
@@ -668,7 +685,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 35,
-    topic: 'Architecture',
+    topic: 'Claude Code',
     prompt: "In Claude Code, a task needs a search across hundreds of files to find one setting, and the main session's context should stay focused. What is a good approach?",
     options: [
       'Have the main session read every candidate file itself, one at a time',
@@ -686,7 +703,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 36,
-    topic: 'Architecture',
+    topic: 'Architecture & orchestration',
     prompt: 'A route answering simple FAQ questions on a current Claude model meets its quality bar but costs more than planned. What should you try first?',
     options: [
       'Switch to the most capable model so fewer answers need follow-up questions',
@@ -705,7 +722,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 37,
-    topic: 'Prompting & context',
+    topic: 'Context & reliability',
     prompt: 'Requests share a large system prompt marked for caching, but usage shows cache_read_input_tokens is always zero. The system prompt begins with the current date and time. What is the likely fix?',
     options: [
       'Add cache_control to more blocks so a larger part of the prompt is cached',
@@ -724,7 +741,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 38,
-    topic: 'Prompting & context',
+    topic: 'Context & reliability',
     prompt: 'An app caches its system prompt, but it builds the tools list per request, adding or removing tools based on the user. Cache hits are rare. Why?',
     options: [
       'Tools are cached separately, so their changes shorten the system prompt TTL',
@@ -743,7 +760,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 39,
-    topic: 'Prompting & context',
+    topic: 'Context & reliability',
     prompt: "A developer is surprised that a follow-up request to the Claude Messages API doesn't remember the previous answer. What explains this?",
     options: [
       'The previous answer expired from the server-side session after a few minutes',
@@ -762,7 +779,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 40,
-    topic: 'Prompting & context',
+    topic: 'Context & reliability',
     prompt: "An app uses server-side compaction for long Claude conversations. After each turn, it stores only the assistant's text in its history. What goes wrong?",
     options: [
       'Nothing, because the server keeps the compacted history between requests',
@@ -781,7 +798,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 41,
-    topic: 'Tools & agents',
+    topic: 'Tools & MCP',
     prompt: 'Claude returns three tool_use blocks in one response. How should the application return the results?',
     options: [
       'Three user messages, one tool_result each, in the order the calls finish',
@@ -800,7 +817,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 42,
-    topic: 'Tools & agents',
+    topic: 'Tools & MCP',
     prompt: 'One of the tools Claude called throws an exception. What should the application send back?',
     options: [
       'Nothing for that call, so the model only sees the successful results',
@@ -819,7 +836,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 43,
-    topic: 'Tools & agents',
+    topic: 'Tools & MCP',
     prompt: 'Claude tool inputs sometimes miss required fields. Which change guarantees that tool_use inputs match the schema?',
     options: [
       'Describe the required fields in more detail in the tool description',
@@ -837,7 +854,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 44,
-    topic: 'Tools & agents',
+    topic: 'Claude Code',
     prompt: 'A team wants Claude Code to run the code formatter after every file edit, with no exceptions. What is the most reliable way to set this up?',
     options: [
       'Add "always run the formatter after editing a file" to CLAUDE.md',
@@ -855,7 +872,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 45,
-    topic: 'Safety & operations',
+    topic: 'Context & reliability',
     prompt: 'An app shows the first text block of every Claude response to the user. Sometimes users see answers that stop mid-sentence. What should the app check?',
     options: [
       'Whether the text ends with punctuation, retrying with a new prompt if not',
@@ -873,7 +890,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 46,
-    topic: 'Safety & operations',
+    topic: 'Context & reliability',
     prompt: 'Under heavy load, some Claude API calls fail with HTTP 429. What is the best way to handle this?',
     options: [
       'Retry every failed request immediately until it succeeds',
@@ -892,7 +909,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 47,
-    topic: 'Safety & operations',
+    topic: 'Claude Code',
     prompt: 'A team lets Claude Code run commands in a shared repository and must make sure it never force-pushes. What is the strongest control?',
     options: [
       'A clear rule in CLAUDE.md telling Claude never to force-push or delete branches',
@@ -911,7 +928,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 48,
-    topic: 'Safety & operations',
+    topic: 'Tools & MCP',
     prompt: 'A team wants to connect a third-party MCP server that gives Claude access to their ticketing system. What should they do first?',
     options: [
       'Connect it directly, since MCP is a standard protocol and its servers are safe by design',
@@ -930,7 +947,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 49,
-    topic: 'Architecture',
+    topic: 'Context & reliability',
     prompt: 'A feature asks Claude for long reports, and some requests fail with HTTP timeouts before the response arrives. What is the best fix?',
     options: [
       'Lower max_tokens until the timeouts stop, even if reports get cut off',
@@ -949,7 +966,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 50,
-    topic: 'Architecture',
+    topic: 'Context & reliability',
     prompt: 'Users ask many follow-up questions about the same large PDF, and the app re-sends it as base64 in every request. What is a better design?',
     options: [
       'Upload it once with the Files API and reference its file_id in each request',
@@ -967,7 +984,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 51,
-    topic: 'Architecture',
+    topic: 'Context & reliability',
     prompt: 'During a provider incident, model calls return overloaded or 5xx errors for several minutes. How should a user-facing assistant behave?',
     options: [
       'Keep users waiting on a loading spinner until the provider recovers',
@@ -986,7 +1003,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 52,
-    topic: 'Prompting & context',
+    topic: 'Prompts & structured output',
     prompt: 'An app sends contract documents to Claude and needs each claim in the answer linked to the exact supporting text. Which approach fits best?',
     options: [
       'Ask the model to quote the source text in brackets after each claim',
@@ -1004,7 +1021,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 53,
-    topic: 'Prompting & context',
+    topic: 'Prompts & structured output',
     prompt: 'A prompt includes several long documents plus a question about them. How should it be laid out?',
     options: [
       'The question first, then the documents, so the model knows what to look for',
@@ -1023,7 +1040,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 54,
-    topic: 'Prompting & context',
+    topic: 'Context & reliability',
     prompt: 'A team wants to check whether a prompt fits within its token budget before sending it to Claude. What is the most accurate method?',
     options: [
       'Divide the character count by four, which is accurate for any model',
@@ -1042,7 +1059,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 55,
-    topic: 'Tools & agents',
+    topic: 'Tools & MCP',
     prompt: 'Claude often picks the wrong tool among several similar ones. What change usually helps most?',
     options: [
       'Give the tools shorter, more distinctive names so they are easier to tell apart',
@@ -1061,7 +1078,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 56,
-    topic: 'Tools & agents',
+    topic: 'Tools & MCP',
     prompt: 'An agent has access to several hundred tools, and their definitions fill much of the context window. What is a good way to handle this?',
     options: [
       'Use tool search with deferred loading so only relevant definitions load',
@@ -1079,7 +1096,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 57,
-    topic: 'Tools & agents',
+    topic: 'Claude Code',
     prompt: 'A team wants Claude Code to follow the same project conventions and build commands for everyone who works in a repository. Where should these go?',
     options: [
       "In each developer's personal memory, added the first time they use the tool",
@@ -1098,7 +1115,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 58,
-    topic: 'Safety & operations',
+    topic: 'Architecture & orchestration',
     prompt: 'An email assistant can read private messages, process untrusted incoming email, and send email. What is the most important risk control?',
     options: [
       'Tell the model never to forward private information to anyone',
@@ -1116,7 +1133,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 59,
-    topic: 'Safety & operations',
+    topic: 'Context & reliability',
     prompt: 'A team uses a model as a judge to grade thousands of responses in an eval. What makes those grades trustworthy?',
     options: [
       'Use the same model as the judge, since it knows how it meant to answer',
@@ -1135,7 +1152,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 60,
-    topic: 'Safety & operations',
+    topic: 'Claude Code',
     prompt: 'A team runs Claude Code non-interactively in CI to fix failing tests on pull requests. Which setup is safest?',
     options: [
       'Give it an admin token and permission to run any command, to avoid failures',
