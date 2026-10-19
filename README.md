@@ -54,15 +54,26 @@ Local release builds are signed with the debug key, so they can't be uploaded to
 
 ## Project layout
 
-- [App.tsx](App.tsx): the whole app, including the question bank (`QUESTIONS`), session logic, ad handling, and styles.
+- [App.tsx](App.tsx): screens, session logic, ad handling, and styles.
+- [questions.ts](questions.ts): the question bank (`QUESTIONS`), the exam domains (`TOPICS`), and how many questions the full exam draws from each domain (`FULL_EXAM_SHARE`).
 - [app.json](app.json): Expo config, app IDs, and the AdMob config plugin.
-- [eas.json](eas.json): EAS build profiles (`development`, `preview`, `production`).
+- [eas.json](eas.json): EAS build profiles (`development`, `preview`, `preview-noads`, `production`, `production-noads`).
 
 ## Question bank
 
-Questions live in the `QUESTIONS` array in [App.tsx](App.tsx). Each one needs a unique `id`, one of the four `Topic` values, four options with distinct text (option text is used as the React key), the zero-based `answer` index, an `explanation`, and a `source`. The `source` has a `title`, an optional `section`, a `url` (with a `#heading` anchor when the page has one), and a `quote` copied word for word from that page. Study mode and the results review show the quote and link to the source. Check that the quote actually appears on the linked page before adding a question. Topic counts on the home screen come from the array, so no other changes are needed.
+Questions live in the `QUESTIONS` array in [questions.ts](questions.ts). Each one needs a unique `id`, one of the five `Topic` values, four options with distinct text (option text is used as the React key), the zero-based `answer` index, an `explanation`, and a `source`. The `source` has a `title`, an optional `section`, a `url` (with a `#heading` anchor when the page has one), and a `quote` copied word for word from that page. Study mode and the results review show the quote and link to the source. Check that the quote actually appears on the linked page before adding a question. Topic counts on the home screen come from the array, so no other changes are needed.
 
-Each session shuffles the question order and the option order, so where the correct option sits in the source doesn't matter. Option *length* does matter: keep distractors about as long and as plausible as the correct answer, or the longest option gives the answer away. The bank has 60 questions, 15 per topic. The timed exam can be either 10 random questions or all 60, chosen on the home card, with 2 minutes per question (20 or 120 minutes). Study mode uses the whole bank, and the quick set uses 5 questions.
+Each session shuffles the question order and the option order, so where the correct option sits in the source doesn't matter. Option *length* does matter: keep distractors about as long and as plausible as the correct answer, or the longest option gives the answer away. The bank has 401 questions, about 80 in each of the five domains reported for the Claude Certified Architect, Foundations exam:
+
+| Topic | Exam domain | Weight | Full exam share |
+| --- | --- | --- | --- |
+| Architecture & orchestration | Agentic architecture & orchestration | 27% | 16 |
+| Claude Code | Claude Code configuration & workflows | 20% | 12 |
+| Prompts & structured output | Prompt engineering & structured output | 20% | 12 |
+| Tools & MCP | Tool design & MCP integration | 18% | 11 |
+| Context & reliability | Context management & reliability | 15% | 9 |
+
+The weights come from third-party exam guides, not an official Anthropic page. The timed exam is either 10 random questions or the full 60, chosen on the home card, with 2 minutes per question (20 or 120 minutes). The full exam draws from each domain by its share. Study mode and topic drills draw 20 random questions, and the quick set uses 5. Topic counts on the home screen come from the array.
 
 ## Ads
 
@@ -99,9 +110,9 @@ npx expo-doctor
 
 Then exercise these flows in the emulator:
 
-- Timed exam: answer, flag and revisit a question, finish the exam, and review the score and answer explanations. Repeat with the "All 60" length and confirm the clock starts at 120:00.
+- Timed exam: answer, flag and revisit a question, finish the exam, and review the score and answer explanations. Repeat with the "Full 60" length and confirm the clock starts at 120:00.
 - Study mode: check both a correct and incorrect answer, read the explanation, and finish the session.
-- Quick set and topic drills: confirm the quick set has five questions and topic drills contain only their selected topic.
+- Quick set and topic drills: confirm the quick set has five questions, and topic drills have 20 questions from only their selected topic.
 - Persistence: finish a session, return to the practice desk, and confirm the latest result remains after restarting the app.
 - Ads: use the test ad unit, verify an interstitial after answers 10, 20, and 30 in study mode, and verify the timed clock remains unchanged while loading/showing and resumes after dismissal.
 
