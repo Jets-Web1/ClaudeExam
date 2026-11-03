@@ -68,7 +68,7 @@ Each session shuffles the question order and the option order, so where the corr
 | Topic | Exam domain | Weight | Full exam share |
 | --- | --- | --- | --- |
 | Architecture & orchestration | Agentic architecture & orchestration | 27% | 16 |
-| Claude Code | Claude Code configuration & workflows | 20% | 12 |
+| Coding agent workflows | Claude Code configuration & workflows | 20% | 12 |
 | Prompts & structured output | Prompt engineering & structured output | 20% | 12 |
 | Tools & MCP | Tool design & MCP integration | 18% | 11 |
 | Context & reliability | Context management & reliability | 15% | 9 |
@@ -93,6 +93,21 @@ eas env:create --name EXPO_PUBLIC_ADMOB_INTERSTITIAL_ID --value ca-app-pub-xxx/z
 Set `EXPO_PUBLIC_DISABLE_ADS=true` to build the app without ads. The app then never runs the consent flow, never initializes the ads SDK, and never pauses for an ad break, and the Privacy choices button doesn't appear. [app.config.js](app.config.js) skips the AdMob ID checks and removes the `com.google.android.gms.permission.AD_ID` permission from the manifest. The ads SDK is still linked into the binary because `App.tsx` imports it, but it makes no ad requests.
 
 The `preview-noads` and `production-noads` EAS profiles set the flag for you (`npm run build:android:noads` builds the store bundle). To run without ads locally, see [Run without ads](#run-without-ads).
+
+### Remove ads purchase
+
+Builds with ads offer a one-time Google Play purchase that turns them off, using [`expo-iap`](https://openiap.dev/docs/setup/expo) (Google Play Billing). The product ID is `remove_ads` (`REMOVE_ADS_SKU` in [App.tsx](App.tsx)). The **Remove ads** row appears at the bottom of the home screen only after Play returns the product, so it stays hidden in local builds and until the product is active. It shows the price from Play and has a **Restore purchase** link.
+
+When a purchase completes, the app acknowledges it (Play refunds purchases that aren't acknowledged within 3 days), stores the result on the device, and stops the ads SDK. On every launch it asks Play which purchases the Google account owns, so a reinstall or a new phone restores the purchase and a refund turns ads back on. A payment that's still pending (for example cash at a store) removes ads once Play confirms it. The app has no backend, so purchases aren't verified server-side.
+
+To set it up:
+
+1. Upload a build that includes `expo-iap` to a testing track. Play Console only allows in-app products after it sees the billing permission in an uploaded bundle.
+2. In Play Console, open **Monetize with Play → Products → One-time products**, create a product with the ID `remove_ads`, give it a name, description and price, and activate it.
+3. Under **Settings → License testing**, add the testers' Google accounts. They can then buy with test cards and aren't charged.
+4. Install the app from the testing track's opt-in link. Billing only returns the product to an app installed from Play (or signed with the same key), so a local debug build never shows the row.
+
+The ad-free builds (`EXPO_PUBLIC_DISABLE_ADS=true`) never show the purchase row.
 
 ### Consent
 

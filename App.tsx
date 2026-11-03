@@ -6,6 +6,7 @@ import mobileAds, {
   InterstitialAd,
   TestIds,
 } from 'react-native-google-mobile-ads';
+import { ErrorCode, getAvailablePurchases, isUserCancelledError, useIAP, type Purchase } from 'expo-iap';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useEffect, useRef, useState } from 'react';
@@ -42,6 +43,10 @@ const INTERSTITIAL_AD_UNIT_ID = ADS_DISABLED
   : __DEV__
     ? TestIds.INTERSTITIAL
     : process.env.EXPO_PUBLIC_ADMOB_INTERSTITIAL_ID;
+// One-time Google Play product that turns ads off. The purchase is cached locally so
+// the app starts ad-free offline, and re-checked with Play on every launch.
+const REMOVE_ADS_SKU = 'remove_ads';
+const ADS_REMOVED_STORAGE_KEY = 'fieldnotes.adsRemoved';
 
 const EXAM_LENGTH = 10;
 const FULL_EXAM_LENGTH = 60;
@@ -113,6 +118,69 @@ export default function App() {
   const adsInitializationFailedRef = useRef(false);
   const [privacyOptionsRequired, setPrivacyOptionsRequired] = useState(false);
   const pendingAdActionRef = useRef<(() => void) | null>(null);
+  // null until the cached purchase state has been read, so ads don't start for a buyer.
+  const [adsRemoved, setAdsRemoved] = useState<boolean | null>(null);
+  const [purchaseBusy, setPurchaseBusy] = useState(false);
+
+  const { connected, products, fetchProducts, requestPurchase, finishTransaction } = useIAP({
+    onPurchaseSuccess: (purchase) => {
+      setPurchaseBusy(false);
+      if (purchase.productId !== REMOVE_ADS_SKU) return;
+      if (purchase.purchaseState === 'pending') {
+        Alert.alert('Payment pending', 'Ads will turn off once Google Play confirms your payment.');
+        return;
+      }
+      grantRemoveAds(purchase);
+    },
+    onPurchaseError: (error) => {
+      setPurchaseBusy(false);
+      if (error.code === ErrorCode.AlreadyOwned) {
+        restorePurchase(true);
+      } else if (!isUserCancelledError(error)) {
+        Alert.alert('Purchase failed', error.message);
+      }
+    },
+  });
+  const removeAdsProduct = products.find((product) => product.id === REMOVE_ADS_SKU);
+
+  function saveAdsRemoved(removed: boolean) {
+    setAdsRemoved(removed);
+    AsyncStorage.setItem(ADS_REMOVED_STORAGE_KEY, String(removed)).catch(() => {});
+  }
+
+  // Play refunds purchases that aren't acknowledged within three days.
+  function grantRemoveAds(purchase: Purchase) {
+    saveAdsRemoved(true);
+    if ('isAcknowledgedAndroid' in purchase && purchase.isAcknowledgedAndroid) return;
+    finishTransaction({ purchase, isConsumable: false }).catch((error: unknown) => logAd('acknowledge failed', error));
+  }
+
+  // Syncs with Play: grants a completed purchase and revokes a refunded one.
+  function restorePurchase(showResult = false) {
+    getAvailablePurchases()
+      .then((purchases) => {
+        const purchase = purchases.find(
+          (item) => item.productId === REMOVE_ADS_SKU && item.purchaseState === 'purchased',
+        );
+        if (purchase) grantRemoveAds(purchase);
+        else saveAdsRemoved(false);
+        if (showResult) {
+          Alert.alert(
+            purchase ? 'Ads removed' : 'No purchase found',
+            purchase ? 'Your purchase was restored.' : 'This Google account has not bought ad removal.',
+          );
+        }
+      })
+      .catch((error: unknown) => {
+        logAd('restore failed', error);
+        if (showResult) Alert.alert('Could not reach Google Play', 'Check your connection and try again.');
+      });
+  }
+
+  function buyRemoveAds() {
+    setPurchaseBusy(true);
+    requestPurchase({ request: { google: { skus: [REMOVE_ADS_SKU] } }, type: 'in-app' }).catch(() => setPurchaseBusy(false));
+  }
 
   const timedLength = fullExam ? FULL_EXAM_LENGTH : EXAM_LENGTH;
   const currentQuestion = questions[questionIndex];
@@ -188,14 +256,24 @@ export default function App() {
         if (storedResult && isActive) setLatestResult(JSON.parse(storedResult) as AttemptResult);
       })
       .catch(() => {});
+    AsyncStorage.getItem(ADS_REMOVED_STORAGE_KEY)
+      .then((stored) => { if (isActive) setAdsRemoved((current) => current ?? stored === 'true'); })
+      .catch(() => { if (isActive) setAdsRemoved((current) => current ?? false); });
     return () => { isActive = false; };
   }, []);
 
   useEffect(() => {
-    if (!INTERSTITIAL_AD_UNIT_ID) return;
+    if (ADS_DISABLED || !connected) return;
+    fetchProducts({ skus: [REMOVE_ADS_SKU], type: 'in-app' }).catch((error: unknown) => logAd('product fetch failed', error));
+    restorePurchase();
+  }, [connected]);
+
+  useEffect(() => {
+    if (!INTERSTITIAL_AD_UNIT_ID || adsRemoved !== false) return;
 
     const ad = InterstitialAd.createForAdRequest(INTERSTITIAL_AD_UNIT_ID);
     interstitialRef.current = ad;
+    adsInitializationFailedRef.current = false;
     ad.addAdEventListener(AdEventType.LOADED, () => {
       logAd('loaded');
       if (pendingAdActionRef.current) showInterstitial(ad);
@@ -240,10 +318,10 @@ export default function App() {
     return () => {
       adsInitializedRef.current = false;
       interstitialRef.current = null;
-      clearAdTimeout();
+      completeAdBreak();
       ad.destroy();
     };
-  }, []);
+  }, [adsRemoved]);
 
   useEffect(() => {
     if (screen !== 'exam' || mode !== 'timed' || adStatus !== 'idle') return;
@@ -368,7 +446,7 @@ export default function App() {
           </View>
 
           <View style={styles.intro}>
-            <Text style={styles.eyebrow}>PRACTICE FOR THE CLAUDE ARCHITECT FOUNDATIONS EXAM</Text>
+            <Text style={styles.eyebrow}>AI SOLUTION ARCHITECTURE PRACTICE</Text>
             <Text style={styles.headline}>Make good{ '\n'}systems choices.</Text>
             <Text style={styles.introText}>A focused practice desk for designing useful, reliable AI solutions.</Text>
           </View>
@@ -469,10 +547,31 @@ export default function App() {
             })}
           </View>
 
+          {!ADS_DISABLED && adsRemoved === false && removeAdsProduct && (
+            <View style={styles.quickRow}>
+              <View style={styles.quickCopy}>
+                <Text style={styles.quickTitle}>Study without breaks</Text>
+                <Text style={styles.quickBody}>Remove ads with a one-time purchase.</Text>
+                <Pressable accessibilityRole="button" onPress={() => restorePurchase(true)} style={styles.privacyButton}>
+                  <Text style={styles.privacyButtonText}>Restore purchase</Text>
+                </Pressable>
+              </View>
+              <Pressable
+                accessibilityRole="button"
+                disabled={purchaseBusy}
+                onPress={buyRemoveAds}
+                style={[styles.quickButton, purchaseBusy && styles.pressed]}
+              >
+                <Text style={styles.quickButtonText}>Remove ads · {removeAdsProduct.displayPrice}</Text>
+              </Pressable>
+            </View>
+          )}
+
           <View style={styles.footerNote}>
             <Text style={styles.footerRule} />
             <Text style={styles.footerText}>Independent study tool. Not affiliated with Anthropic. Questions are original practice material, not official exam content.</Text>
-            {privacyOptionsRequired && (
+            {adsRemoved && <Text style={[styles.footerText, styles.footerThanks]}>Ads removed. Thanks for supporting the app.</Text>}
+            {privacyOptionsRequired && !adsRemoved && (
               <Pressable
                 accessibilityRole="button"
                 onPress={() => AdsConsent.showPrivacyOptionsForm().catch((error: unknown) => logAd('privacy options failed', error))}
@@ -740,6 +839,7 @@ const styles = StyleSheet.create({
   footerNote: { marginTop: 21 },
   footerRule: { width: 27, height: 3, backgroundColor: COLORS.orange, marginBottom: 10 },
   footerText: { color: COLORS.muted, fontSize: 10, lineHeight: 15 },
+  footerThanks: { marginTop: 8, color: COLORS.green },
   privacyButton: { alignSelf: 'flex-start', marginTop: 10, paddingVertical: 6 },
   privacyButtonText: { color: COLORS.green, fontSize: 11, fontWeight: '700', textDecorationLine: 'underline' },
   examContent: { paddingHorizontal: 22, paddingTop: 10, paddingBottom: 32 },
