@@ -1,4 +1,4 @@
-GOOGLE PLAY STORE LISTING: Foundations Practice (ad-free build)
+GOOGLE PLAY STORE LISTING: Foundations Practice (with ads)
 
 APP NAME (max 30)
 Foundations Practice
@@ -32,7 +32,7 @@ BUILT FOR FOCUS
 • Questions and answers are shuffled every session
 • Your latest score is saved on your device
 • Works offline, no account needed
-• No ads, and no personal data collected
+• Supported by ads, which you can remove with a one-time purchase
 
 Foundations Practice is an independent study tool. It is not affiliated with, endorsed by, or sponsored by Anthropic or any certification provider. Questions are original practice material, not official exam content.
 
@@ -46,9 +46,12 @@ First release of Foundations Practice.
 • Flag questions and review your answers at the end
 • Your latest score is saved on your device
 • Works offline, no account needed
+• Remove ads with a one-time purchase
 </en-US>
 
 OTHER FIELDS
+Contains ads: Yes
+In-app purchases: Yes (one-time "Remove ads", product ID remove_ads)
 Category: Education
 Tags: Education, Exam prep, Study tools
 Contact email: diazjet123@gmail.com
@@ -58,3 +61,18 @@ GRAPHICS (in this folder)
 App icon (512x512):            icon-512.png
 Feature graphic (1024x500):    feature-graphic.png
 Phone screenshots (1080x1920): phone-screenshots/01-home.png ... 05-topics.png (upload in this order)
+
+APP CONTENT DECLARATIONS (Play Console > Policy > App content)
+Ads: Yes, the app contains ads.
+Advertising ID: Yes, used for Advertising or marketing (Google Mobile Ads SDK).
+Target audience: 18 and over (not designed for children).
+Data safety: declare what the Google Mobile Ads SDK collects, following Google's guide
+(https://developers.google.com/admob/android/privacy/play-data-disclosure):
+  Collected and shared, for Advertising or marketing, Analytics, and Fraud prevention:
+  - Device or other IDs (advertising ID, app set ID)
+  - Location: approximate location (derived from IP address)
+  - App activity: app interactions (ad taps and views)
+  - App info and performance: crash logs, diagnostics
+  Data is encrypted in transit. Users can't request deletion from the app itself.
+  The app stores the latest score and the remove-ads flag only on the device; that isn't
+  "collected" because it never leaves the phone.
