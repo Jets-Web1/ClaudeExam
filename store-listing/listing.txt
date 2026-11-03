@@ -1,0 +1,60 @@
+GOOGLE PLAY STORE LISTING: Foundations Practice (ad-free build)
+
+APP NAME (max 30)
+Foundations Practice
+
+SHORT DESCRIPTION (max 80)
+Timed practice exams and study drills on AI solution architecture basics.
+
+FULL DESCRIPTION (max 4000)
+Foundations Practice helps you prepare for an AI solution architecture foundations exam with 400 realistic practice questions, clear explanations, and a timed exam mode.
+
+TIMED EXAM
+• Choose a 10-question exam or a full 60-question exam weighted across all five domains
+• 2 minutes per question, with a clock that keeps you on pace
+• Flag questions to revisit before you finish
+• Review every answer with an explanation at the end
+
+STUDY MODE
+• Check each answer as you go
+• Read why the correct answer is right and the others are not
+• Every explanation quotes and links to the public documentation it is based on
+
+FIVE DOMAINS, ABOUT 80 QUESTIONS EACH
+• Architecture & orchestration
+• Coding agent configuration & workflows
+• Prompts & structured output
+• Tools & MCP
+• Context & reliability
+Drill a single domain 20 questions at a time, or take a quick 5-question warm-up when you are short on time.
+
+BUILT FOR FOCUS
+• Questions and answers are shuffled every session
+• Your latest score is saved on your device
+• Works offline, no account needed
+• No ads, and no personal data collected
+
+Foundations Practice is an independent study tool. It is not affiliated with, endorsed by, or sponsored by Anthropic or any certification provider. Questions are original practice material, not official exam content.
+
+RELEASE NOTES (version 1.0.0)
+<en-US>
+First release of Foundations Practice.
+• 400 questions across five exam domains
+• Timed exam: 10 questions, or a full 60 weighted by domain, with 2 minutes per question
+• Study mode with explanations and a link to the source for each answer
+• 20-question drills for each domain, plus a quick 5-question set
+• Flag questions and review your answers at the end
+• Your latest score is saved on your device
+• Works offline, no account needed
+</en-US>
+
+OTHER FIELDS
+Category: Education
+Tags: Education, Exam prep, Study tools
+Contact email: diazjet123@gmail.com
+Privacy policy: https://jets-web1.github.io/ClaudeExam/privacy-policy.html
+
+GRAPHICS (in this folder)
+App icon (512x512):            icon-512.png
+Feature graphic (1024x500):    feature-graphic.png
+Phone screenshots (1080x1920): phone-screenshots/01-home.png ... 05-topics.png (upload in this order)
