@@ -2,7 +2,7 @@
 
 export type Topic =
   | 'Architecture & orchestration'
-  | 'Claude Code'
+  | 'Coding agent workflows'
   | 'Prompts & structured output'
   | 'Tools & MCP'
   | 'Context & reliability';
@@ -27,7 +27,7 @@ export type Question = {
 // The five domains of the Claude Certified Architect, Foundations exam, in order of weight.
 export const TOPICS: Topic[] = [
   'Architecture & orchestration',
-  'Claude Code',
+  'Coding agent workflows',
   'Prompts & structured output',
   'Tools & MCP',
   'Context & reliability',
@@ -37,7 +37,7 @@ export const TOPICS: Topic[] = [
 // reported exam weights (27%, 20%, 20%, 18%, 15%).
 export const FULL_EXAM_SHARE: Record<Topic, number> = {
   'Architecture & orchestration': 16,
-  'Claude Code': 12,
+  'Coding agent workflows': 12,
   'Prompts & structured output': 12,
   'Tools & MCP': 11,
   'Context & reliability': 9,
@@ -685,7 +685,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 35,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "In Claude Code, a task needs a search across hundreds of files to find one setting, and the main session's context should stay focused. What is a good approach?",
     options: [
       'Have the main session read every candidate file itself, one at a time',
@@ -854,7 +854,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 44,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A team wants Claude Code to run the code formatter after every file edit, with no exceptions. What is the most reliable way to set this up?',
     options: [
       'Add "always run the formatter after editing a file" to CLAUDE.md',
@@ -909,7 +909,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 47,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A team lets Claude Code run commands in a shared repository and must make sure it never force-pushes. What is the strongest control?',
     options: [
       'A clear rule in CLAUDE.md telling Claude never to force-push or delete branches',
@@ -1096,7 +1096,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 57,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A team wants Claude Code to follow the same project conventions and build commands for everyone who works in a repository. Where should these go?',
     options: [
       "In each developer's personal memory, added the first time they use the tool",
@@ -1152,7 +1152,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 60,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A team runs Claude Code non-interactively in CI to fix failing tests on pull requests. Which setup is safest?',
     options: [
       'Give it an admin token and permission to run any command, to avoid failures',
@@ -1171,7 +1171,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 61,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'Claude Code has used the wrong package manager in two sessions, and a teammate corrected it in chat both times. What is the recommended fix?',
     options: [
       "Add the package manager rule to the project's CLAUDE.md file",
@@ -1190,7 +1190,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 62,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A team requires that Claude Code never edits .env files, with no exceptions. Which setup actually enforces this?',
     options: [
       'A PreToolUse hook that blocks any edit to .env files',
@@ -1209,7 +1209,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 63,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "A project's CLAUDE.md has grown to 700 lines, mostly API reference material that is only needed for some tasks. What should the team do?",
     options: [
       'Move the reference material into skills that load on demand',
@@ -1228,7 +1228,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 64,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A team has built a set of skills, hooks, and MCP server settings for one repository and now wants the same setup in ten other repositories. What fits best?',
     options: [
       'Package them as a plugin and install it in each repository',
@@ -1247,7 +1247,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 65,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A /deploy skill pushes to production. The team wants it to run only when someone types /deploy, never because Claude decided it was relevant. What should they set?',
     options: [
       "disable-model-invocation: true in the skill's frontmatter",
@@ -1266,7 +1266,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 66,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "An MCP server gives Claude Code query access to the team's database, but Claude often writes queries against the wrong tables. What is the best addition?",
     options: [
       "A skill that documents the schema and the team's query patterns",
@@ -1285,7 +1285,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 67,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "A skill named review exists both in a developer's user skills and in the project's .claude/skills folder. Which definition does Claude Code use?",
     options: [
       'The user-level skill, because user ranks above project for skills',
@@ -1304,7 +1304,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 68,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A developer has a user-level CLAUDE.md, the repository has a project CLAUDE.md, and a subdirectory has its own CLAUDE.md. How do they combine?',
     options: [
       "All of them contribute content to Claude's context together",
@@ -1323,7 +1323,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 69,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "A plugin and the project's settings each register a PostToolUse hook for file edits. What happens when Claude edits a file?",
     options: [
       'Both hooks fire, because hooks from every source are merged',
@@ -1342,7 +1342,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 70,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A developer connects several MCP servers with dozens of tools each and worries about context use. What loads at session start by default?',
     options: [
       'Tool names and server instructions, with full schemas deferred',
@@ -1361,7 +1361,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 71,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A custom (non-fork) subagent is spawned for a task. What does its context start with?',
     options: [
       'Its own system prompt, listed skills, CLAUDE.md, and the task prompt',
@@ -1380,7 +1380,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 72,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A subagent definition lists two skills in its skills field. How are those skills loaded for the subagent?',
     options: [
       'Their full content is preloaded into its context at launch',
@@ -1399,7 +1399,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 73,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A developer keeps asking Claude Code for shorter answers and wants to switch that preference off for some sessions. Where does it belong?',
     options: [
       'In an output style, which shapes responses and can be switched',
@@ -1418,7 +1418,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 74,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A team wants Claude Code to audit an entire codebase, with a second set of agents verifying each finding before anyone sees it. Which feature fits?',
     options: [
       'A dynamic workflow that runs many subagents from a script',
@@ -1437,7 +1437,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 75,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A monorepo has frontend conventions that only matter when Claude works on files under web/. How can they be loaded only then?',
     options: [
       'A .claude/rules file with paths frontmatter matching web/',
@@ -1456,7 +1456,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 76,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'Claude Code ran a migration against a shared staging database, and the result was wrong. Can a checkpoint rewind undo it?',
     options: [
       'No; checkpoints cover file changes, not remote systems',
@@ -1475,7 +1475,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 77,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A developer wants to try a different approach from an existing Claude Code session while keeping the original session unchanged. What should they use?',
     options: [
       'Fork the session with --fork-session or /branch',
@@ -1494,7 +1494,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 78,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A developer wants two Claude Code sessions working on two different branches of the same repository at the same time. What is the recommended setup?',
     options: [
       'Use git worktrees so each branch has its own directory',
@@ -1513,7 +1513,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 79,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'In a long Claude Code session, the team wants automatic compaction to keep details about API changes. How can they influence what is preserved?',
     options: [
       'Add a Compact Instructions section to CLAUDE.md, or run /compact with a focus',
@@ -1532,7 +1532,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 80,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "A developer starts a new Claude Code session and is surprised it doesn't know what was discussed yesterday. Why, and what persists across sessions?",
     options: [
       'Each session starts fresh; CLAUDE.md and auto memory carry over',
@@ -1551,7 +1551,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 81,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'Before a risky refactor, a lead wants Claude Code to investigate the codebase and propose an approach without changing any source files. Which permission mode fits?',
     options: [
       'Plan mode',
@@ -1570,7 +1570,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 82,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'Claude Code is midway through a task and running tool calls when the developer notices it should also update the docs. How can they redirect without stopping it?',
     options: [
       'Type the correction and press Enter so it is queued',
@@ -1589,7 +1589,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 83,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A developer wants Claude Code to know their personal sandbox URL for one project, without committing it for the rest of the team. Where should it go?',
     options: [
       'A CLAUDE.local.md at the project root, added to .gitignore',
@@ -1608,7 +1608,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 84,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'To cut context use, a team splits a 600-line CLAUDE.md into five files and pulls them back in with @path imports. Does this reduce context cost?',
     options: [
       'No; imported files still load at launch with the CLAUDE.md',
@@ -1627,7 +1627,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 85,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'Which CLAUDE.md instruction is Claude Code most likely to follow reliably?',
     options: [
       '"Run npm test before committing"',
@@ -1646,7 +1646,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 86,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'The root CLAUDE.md says to use tabs, while a rule file in .claude/rules/ says to use spaces. What should the team expect?',
     options: [
       'Claude may pick either one, so the conflict should be removed',
@@ -1665,7 +1665,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 87,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "In a large monorepo, a developer's sessions pick up another team's CLAUDE.md from a parent folder, and its instructions don't apply to their work. What should they use?",
     options: [
       'The claudeMdExcludes setting, in their local settings',
@@ -1684,7 +1684,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 88,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'An organization wants to stop Claude Code from ever reading files in a credentials directory, on every developer machine. Where should this go?',
     options: [
       'A permissions.deny rule in managed settings',
@@ -1703,7 +1703,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 89,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "A developer adds a claudeMdExcludes pattern that matches the organization's managed CLAUDE.md. What happens?",
     options: [
       'The managed file still loads; it cannot be excluded',
@@ -1722,7 +1722,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 90,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A repository has both an AGENTS.md for other coding tools and a CLAUDE.md. With default settings, which does Claude Code read?',
     options: [
       'Only the CLAUDE.md files',
@@ -1741,7 +1741,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 91,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A project keeps its shared agent instructions in AGENTS.md but also needs a few Claude-specific notes in CLAUDE.md. How can both reach Claude?',
     options: [
       'Put an @AGENTS.md import in CLAUDE.md, then add the Claude notes',
@@ -1760,7 +1760,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 92,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A team is starting to use Claude Code on an existing repository that has no CLAUDE.md. What is a quick way to create a useful first version?',
     options: [
       'Run /init so Claude analyzes the codebase and drafts one',
@@ -1779,7 +1779,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 93,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'What is the main difference between CLAUDE.md files and auto memory in Claude Code?',
     options: [
       'You write CLAUDE.md; Claude writes auto memory from your corrections',
@@ -1797,7 +1797,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 94,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A developer launches Claude Code at the repository root. When does a CLAUDE.md inside packages/billing/ load?',
     options: [
       'When Claude reads, writes, or edits a file in packages/billing/',
@@ -1816,7 +1816,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 95,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A settings file denies Bash(aws *) and allows Bash(aws s3 ls). Claude tries to run aws s3 ls. What happens?',
     options: [
       'It is blocked, because deny rules are checked before allow',
@@ -1835,7 +1835,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 96,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A team allows Bash(npm test *). Claude tries npm test && curl https://example.com. How does Claude Code treat it?',
     options: [
       'Each subcommand must be allowed, so the curl part still needs approval',
@@ -1854,7 +1854,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 97,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "A team denies Bash(curl *) to keep Claude Code off the network. Why isn't that enough on its own, and what is stronger?",
     options: [
       "Forms like /usr/bin/curl aren't matched; use sandboxing for network limits",
@@ -1873,7 +1873,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 98,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A team wants Claude Code to run git log commands without asking, but still prompt for every other git command. Which allow rule fits?',
     options: [
       'Bash(git log *)',
@@ -1892,7 +1892,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 99,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'When is the bypassPermissions mode appropriate for Claude Code?',
     options: [
       'Only in isolated environments such as containers or VMs',
@@ -1911,7 +1911,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 100,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'An organization must ensure no developer can turn on bypassPermissions mode. What is the most robust setting?',
     options: [
       'permissions.disableBypassPermissionsMode set in managed settings',
@@ -1930,7 +1930,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 101,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'An unattended job runs Claude Code where nobody can answer prompts. It should run pre-approved tools and refuse everything else. Which mode fits?',
     options: [
       'dontAsk',
@@ -1949,7 +1949,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 102,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A team adds a deny rule with just the tool name WebSearch. How does this differ from a scoped rule such as Bash(rm *)?',
     options: [
       "WebSearch is removed from Claude's context, so Claude never sees it",
@@ -1968,7 +1968,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 103,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A team wants Claude Code to fetch only from github.com and writes the allow rule Bash(curl http://github.com/ *). What is the problem?',
     options: [
       'Argument patterns are fragile; deny curl and allow WebFetch for the domain',
@@ -1987,7 +1987,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 104,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A developer answers "Yes, and don\'t ask again" for a Bash command in a git repository. Where does Claude Code save that rule?',
     options: [
       '.claude/settings.local.json at the root of the git repository',
@@ -2006,7 +2006,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 105,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A PreToolUse command hook must stop a dangerous shell command and tell Claude why, so it can try another approach. How should the script respond?',
     options: [
       'Exit with code 2 and write the reason to stderr',
@@ -2025,7 +2025,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 106,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A PreToolUse hook checks a Bash command, finds nothing wrong, and exits 0. Does that approve the tool call?',
     options: [
       'No; the normal permission flow still decides whether it runs',
@@ -2044,7 +2044,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 107,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'Two PreToolUse hooks match the same Bash call: one returns allow and the other returns deny. What does Claude Code do?',
     options: [
       'Blocks the call, because the most restrictive decision applies',
@@ -2063,7 +2063,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 108,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "After auto-compaction, Claude Code sometimes forgets the current sprint's conventions. Which hook restores them after each compaction?",
     options: [
       'A SessionStart hook with a compact matcher that prints them',
@@ -2082,7 +2082,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 109,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A compliance team uses a PostToolUse hook with an Edit|Write matcher to log every file Claude changes. What gap does this leave?',
     options: [
       'Files changed by shell commands are missed; add a Stop hook that scans the tree',
@@ -2101,7 +2101,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 110,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A developer writes a PermissionRequest hook to auto-approve the prompt shown when a plan is ready. Why must its matcher be narrow?',
     options: [
       'An empty or .* matcher would auto-approve every permission prompt',
@@ -2120,7 +2120,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 111,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A developer wants a desktop alert whenever Claude Code is waiting for their input or a permission decision. Which hook event fits?',
     options: [
       'Notification',
@@ -2139,7 +2139,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 112,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "A team wants a hook that decides whether Claude's change really completes the task, which needs judgment rather than a fixed rule. What type of hook fits?",
     options: [
       'A prompt-based or agent-based hook that uses a Claude model',
@@ -2157,7 +2157,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 113,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A UserPromptSubmit hook prints JSON with additionalContext at the top level, but Claude never sees the text. What is wrong?',
     options: [
       'additionalContext must be nested inside hookSpecificOutput',
@@ -2176,7 +2176,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 114,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "A project uses direnv to set environment variables per directory, but Claude Code's Bash tool doesn't pick them up when Claude changes directory. What fixes this?",
     options: [
       'SessionStart and CwdChanged hooks that write to CLAUDE_ENV_FILE',
@@ -2195,7 +2195,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 115,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A security team wants to log, and optionally block, changes made to Claude Code settings files by other editors during a session. Which hook event fits?',
     options: [
       'ConfigChange',
@@ -2214,7 +2214,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 116,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "A team often asks Claude Code to summarize large log files, which is simple work. How can they lower the cost of these tasks without changing the main session's model?",
     options: [
       'A custom subagent for log summaries with model set to haiku',
@@ -2232,7 +2232,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 117,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A team created a database-migration subagent, but Claude rarely delegates to it. What should they improve first?',
     options: [
       "The subagent's description, so Claude knows when to use it",
@@ -2250,7 +2250,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 118,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A team wants a code-review subagent that can read and search the code but can never modify files. How should they set it up?',
     options: [
       "Limit the subagent's tools field to read and search tools",
@@ -2268,7 +2268,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 119,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A team wants every developer on a repository to use the same test-runner subagent and improve it over time. Where should it live?',
     options: [
       'In .claude/agents/ in the repository, checked into version control',
@@ -2287,7 +2287,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 120,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A subagent installed from a plugin declares hooks and mcpServers in its frontmatter, but neither takes effect. Why?',
     options: [
       'Plugin subagents ignore those fields for security reasons',
@@ -2306,7 +2306,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 121,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "A subagent will try risky changes, and the team doesn't want them touching the main checkout's working files. Which setting fits?",
     options: [
       'isolation: worktree, so it works in its own copy of the repository',
@@ -2325,7 +2325,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 122,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A research subagent sometimes runs for a very long time on open-ended tasks. Which frontmatter field caps how long it can run?',
     options: [
       'maxTurns',
@@ -2344,7 +2344,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 123,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'Which built-in Claude Code subagent does Claude use to search and understand a codebase without making changes?',
     options: [
       'Explore',
@@ -2363,7 +2363,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 124,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'An organization wants Claude Code to stop delegating work to any subagent at all. What is the most direct setting?',
     options: [
       'Deny the Agent tool with permissions.deny',
@@ -2382,7 +2382,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 125,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "A developer delegates many tasks to subagents, expecting it to stretch their plan's usage limits. Is that correct?",
     options: [
       'No; subagent requests count toward the same usage limits',
@@ -2400,7 +2400,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 126,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "Claude Code warns at startup that the team's custom subagent descriptions are very long. What is the recommended fix?",
     options: [
       'Shorten the descriptions and move detail into each system prompt',
@@ -2418,7 +2418,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 127,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A code-review subagent should remember recurring issues it finds across sessions in the same project. Which frontmatter field supports this?',
     options: [
       'memory',
@@ -2437,7 +2437,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 128,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "A section of a team's CLAUDE.md has grown into a 30-step release procedure that is only used once a week. What should they do with it?",
     options: [
       'Turn the procedure into a skill that loads when it is used',
@@ -2455,7 +2455,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 129,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A team has several custom commands in .claude/commands/, written before skills existed. What do they need to do to keep using them?',
     options: [
       'Nothing; commands were merged into skills and keep working',
@@ -2473,7 +2473,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 130,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "A CI job runs claude -p, and its results differ between machines because of hooks and MCP servers in developers' personal configuration. What helps most?",
     options: [
       'Run with --bare and pass needed settings and servers explicitly',
@@ -2492,7 +2492,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 131,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A pipeline runs claude -p (without --bare) on pull requests from outside contributors. Which risk should the team know about?',
     options: [
       'Project hooks and .mcp.json servers run with no trust prompt',
@@ -2511,7 +2511,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 132,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "A team turns on Claude Code's Bash sandbox and adds ~/.aws to its denyRead list. Does this stop Claude from opening those files with the Read tool?",
     options: [
       "No; the sandbox covers shell commands, not Claude's file tools",
@@ -2529,7 +2529,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 133,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "With Claude Code's sandbox enabled, a build command needs to download packages from a registry for the first time. What happens?",
     options: [
       'Claude Code asks for approval of the new network domain',
@@ -2548,7 +2548,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 134,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: "A developer on native Windows wants Claude Code's Bash sandbox. What do they need to do?",
     options: [
       'Run Claude Code inside a WSL2 distribution',
@@ -2566,7 +2566,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 135,
-    topic: 'Claude Code',
+    topic: 'Coding agent workflows',
     prompt: 'A team is connecting Claude Code to a cloud-hosted MCP server that offers several transports. Which one is recommended?',
     options: [
       'HTTP (streamable HTTP)',
